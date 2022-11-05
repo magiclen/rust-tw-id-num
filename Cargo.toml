@@ -1,0 +1,18 @@
+[package]
+name = "tw-id-num"
+version = "0.1.0"
+edition = "2021"
+repository = "https://github.com/magiclen/rust-tw-id-num"
+homepage = "https://magiclen.org/tw-id-num"
+keywords = ["sort"]
+categories = ["no-std", "algorithms"]
+description = "Check or generate Taiwan ID numbers."
+readme = "README.md"
+license = "MIT"
+include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
+
+[dependencies]
+rand = { version = "0.8.5", optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
