@@ -1,31 +1,7 @@
 use crate::location_values;
 
-/**
- * 檢查國民身分證統一編號。
- */
-pub fn check_national<S: AsRef<str>>(text: S) -> bool {
-    let bytes = text.as_ref().as_bytes();
-
-    if bytes.len() != 10 {
-        return false;
-    }
-
-    let mut sum = 0u16;
-
-    match bytes[0] {
-        b'A'..=b'Z' => {
-            sum += location_values::LOCATION_VALUES[(bytes[0] - b'A') as usize] as u16;
-        }
-        _ => return false,
-    }
-
-    match bytes[1] {
-        b'1' | b'2' => {
-            sum += ((bytes[1] - b'0') * 8) as u16;
-        }
-        _ => return false,
-    }
-
+#[inline]
+fn check_tailing(bytes: &[u8], mut sum: u16) -> bool {
     for (i, e) in bytes[2..9].iter().enumerate() {
         match e {
             b'0'..=b'9' => {
@@ -38,6 +14,39 @@ pub fn check_national<S: AsRef<str>>(text: S) -> bool {
     sum += (bytes[9] - b'0') as u16;
 
     sum % 10 == 0
+}
+
+/**
+ * 檢查國民身分證統一編號。
+ */
+pub fn check_national<S: AsRef<str>>(text: S) -> bool {
+    let bytes = text.as_ref().as_bytes();
+
+    if bytes.len() != 10 {
+        return false;
+    }
+
+    let mut sum = 0u16;
+
+    let location = bytes[0];
+
+    match location {
+        b'A'..=b'Z' => {
+            sum += location_values::LOCATION_VALUES[(location - b'A') as usize] as u16;
+        }
+        _ => return false,
+    }
+
+    let sex = bytes[1];
+
+    match sex {
+        b'1' | b'2' => {
+            sum += ((sex - b'0') * 8) as u16;
+        }
+        _ => return false,
+    }
+
+    check_tailing(bytes, sum)
 }
 
 /**
@@ -52,32 +61,25 @@ pub fn check_resident<S: AsRef<str>>(text: S) -> bool {
 
     let mut sum = 0u16;
 
-    match bytes[0] {
+    let location = bytes[0];
+
+    match location {
         b'A'..=b'K' | b'M'..=b'Q' | b'T'..=b'X' | b'Z' => {
-            sum += location_values::LOCATION_VALUES[(bytes[0] - b'A') as usize] as u16;
+            sum += location_values::LOCATION_VALUES[(location - b'A') as usize] as u16;
         }
         _ => return false,
     }
 
-    match bytes[1] {
+    let sex = bytes[1];
+
+    match sex {
         b'8' | b'9' => {
-            sum += ((bytes[1] - b'0') * 8) as u16;
+            sum += ((sex - b'0') * 8) as u16;
         }
         _ => return false,
     }
 
-    for (i, e) in bytes[2..9].iter().enumerate() {
-        match e {
-            b'0'..=b'9' => {
-                sum += ((e - b'0') * (7 - i as u8)) as u16;
-            }
-            _ => return false,
-        }
-    }
-
-    sum += (bytes[9] - b'0') as u16;
-
-    sum % 10 == 0
+    check_tailing(bytes, sum)
 }
 
 /**
@@ -92,13 +94,17 @@ pub fn check<S: AsRef<str>>(text: S) -> bool {
 
     let mut sum = 0u16;
 
-    match bytes[0] {
-        b'A'..=b'K' | b'M'..=b'Q' | b'T'..=b'X' | b'Z' => {
-            sum += location_values::LOCATION_VALUES[(bytes[0] - b'A') as usize] as u16;
+    let location = bytes[0];
 
-            match bytes[1] {
+    match location {
+        b'A'..=b'K' | b'M'..=b'Q' | b'T'..=b'X' | b'Z' => {
+            sum += location_values::LOCATION_VALUES[(location - b'A') as usize] as u16;
+
+            let sex = bytes[1];
+
+            match sex {
                 b'1' | b'2' | b'8' | b'9' => {
-                    sum += ((bytes[1] - b'0') * 8) as u16;
+                    sum += ((sex - b'0') * 8) as u16;
                 }
                 _ => return false,
             }
@@ -106,9 +112,11 @@ pub fn check<S: AsRef<str>>(text: S) -> bool {
         b'L' | b'R' | b'S' | b'Y' => {
             sum += location_values::LOCATION_VALUES[(bytes[0] - b'A') as usize] as u16;
 
-            match bytes[1] {
+            let sex = bytes[1];
+
+            match sex {
                 b'1' | b'2' => {
-                    sum += ((bytes[1] - b'0') * 8) as u16;
+                    sum += ((sex - b'0') * 8) as u16;
                 }
                 _ => return false,
             }
@@ -116,16 +124,5 @@ pub fn check<S: AsRef<str>>(text: S) -> bool {
         _ => return false,
     }
 
-    for (i, e) in bytes[2..9].iter().enumerate() {
-        match e {
-            b'0'..=b'9' => {
-                sum += ((e - b'0') * (7 - i as u8)) as u16;
-            }
-            _ => return false,
-        }
-    }
-
-    sum += (bytes[9] - b'0') as u16;
-
-    sum % 10 == 0
+    check_tailing(bytes, sum)
 }
