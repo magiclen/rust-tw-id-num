@@ -1,6 +1,6 @@
 [package]
 name = "tw-id-num"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 repository = "https://github.com/magiclen/rust-tw-id-num"
 homepage = "https://magiclen.org/tw-id-num"
