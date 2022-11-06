@@ -29,6 +29,14 @@ version = "*"
 features = ["generate"]
 ```
 
+## Crates.io
+
+https://crates.io/crates/tw-id-num
+
+## Documentation
+
+https://docs.rs/tw-id-num
+
 ## License
 
 [MIT](LICENSE)
