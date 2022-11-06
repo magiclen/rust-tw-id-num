@@ -1,8 +1,8 @@
 use crate::location_values;
 
 #[inline]
-fn check_tailing(bytes: &[u8], mut sum: u16) -> bool {
-    for (i, e) in bytes[2..9].iter().enumerate() {
+fn check_2_to_9(bytes: &[u8], mut sum: u16) -> bool {
+    for (i, e) in bytes[2..=8].iter().enumerate() {
         match e {
             b'0'..=b'9' => {
                 sum += ((e - b'0') * (7 - i as u8)) as u16;
@@ -46,7 +46,7 @@ pub fn check_national<S: AsRef<str>>(text: S) -> bool {
         _ => return false,
     }
 
-    check_tailing(bytes, sum)
+    check_2_to_9(bytes, sum)
 }
 
 /**
@@ -79,7 +79,7 @@ pub fn check_resident<S: AsRef<str>>(text: S) -> bool {
         _ => return false,
     }
 
-    check_tailing(bytes, sum)
+    check_2_to_9(bytes, sum)
 }
 
 /**
@@ -124,5 +124,5 @@ pub fn check<S: AsRef<str>>(text: S) -> bool {
         _ => return false,
     }
 
-    check_tailing(bytes, sum)
+    check_2_to_9(bytes, sum)
 }

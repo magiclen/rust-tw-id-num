@@ -14,5 +14,8 @@ include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
 [dependencies]
 rand = { version = "0.8.5", optional = true }
 
+[features]
+generate = ["rand"]
+
 [package.metadata.docs.rs]
 all-features = true

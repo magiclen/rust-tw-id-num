@@ -53,6 +53,6 @@ jobs:
       - run: cargo build
       - run: cargo test
       - run: cargo doc
-      - run: cargo build --features rand
-      - run: cargo test --features rand
-      - run: cargo doc --features rand
+      - run: cargo build --features generate
+      - run: cargo test --features generate
+      - run: cargo doc --features generate

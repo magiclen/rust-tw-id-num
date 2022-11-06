@@ -32,6 +32,6 @@ jobs:
       - run: cargo build --release
       - run: cargo test --release
       - run: cargo doc --release
-      - run: cargo build --release --features rand
-      - run: cargo test --release --features rand
-      - run: cargo doc --release --features rand
+      - run: cargo build --release --features generate
+      - run: cargo test --release --features generate
+      - run: cargo doc --release --features generate
