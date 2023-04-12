@@ -26,7 +26,6 @@ fn test_generate_resident() {
 fn test_generate() {
     for _ in 0..TESTS_COUNT {
         let id = generate(None);
-        println!("{id}");
         assert!(check(id));
     }
 }
