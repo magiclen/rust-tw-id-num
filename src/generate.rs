@@ -122,7 +122,7 @@ pub fn generate_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
             } else {
                 b'8'
             }
-        }
+        },
         Some(Sex::Female) => {
             let rnd = rng.gen_range(1u8..=2);
 
@@ -131,7 +131,7 @@ pub fn generate_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
             } else {
                 b'9'
             }
-        }
+        },
         None => {
             let rnd = rng.gen_range(1u8..=4);
 
@@ -142,7 +142,7 @@ pub fn generate_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
                 4 => b'9',
                 _ => unreachable!(),
             }
-        }
+        },
     };
 
     if buffer[1] <= b'2' {

@@ -1,8 +1,8 @@
 #![cfg(feature = "rand")]
 
-use tw_id_num::{check, generate};
-use tw_id_num::{check_national, generate_national};
-use tw_id_num::{check_resident, generate_resident};
+use tw_id_num::{
+    check, check_national, check_resident, generate, generate_national, generate_resident,
+};
 
 const TESTS_COUNT: usize = 10000;
 

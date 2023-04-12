@@ -40,6 +40,5 @@ mod location_values;
 mod generate;
 
 pub use check::*;
-
 #[cfg(feature = "rand")]
 pub use generate::*;

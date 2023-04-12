@@ -2,6 +2,7 @@
 name = "tw-id-num"
 version = "0.1.1"
 edition = "2021"
+rust-version = "1.56"
 repository = "https://github.com/magiclen/rust-tw-id-num"
 homepage = "https://magiclen.org/tw-id-num"
 keywords = ["taiwan"]
