@@ -58,12 +58,7 @@ fn generate_continue_resident<R: Rng>(mut buffer: Vec<u8>, mut rng: R) -> String
 
 /// 產生國民身分證統一編號。
 pub fn generate_national_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
-    let mut buffer = Vec::with_capacity(10);
-
-    #[allow(clippy::uninit_vec)]
-    unsafe {
-        buffer.set_len(10);
-    }
+    let mut buffer = vec![0u8; 10];
 
     buffer[1] = match sex {
         Some(Sex::Male) => b'1',
@@ -82,12 +77,7 @@ pub fn generate_national(sex: Option<Sex>) -> String {
 
 /// 產生新式外來人口統一證號。
 pub fn generate_resident_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
-    let mut buffer = Vec::with_capacity(10);
-
-    #[allow(clippy::uninit_vec)]
-    unsafe {
-        buffer.set_len(10);
-    }
+    let mut buffer = vec![0u8; 10];
 
     buffer[1] = match sex {
         Some(Sex::Male) => b'8',
@@ -106,12 +96,7 @@ pub fn generate_resident(sex: Option<Sex>) -> String {
 
 /// 產生國民身分證統一編號或是新式外來人口統一證號。
 pub fn generate_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
-    let mut buffer = Vec::with_capacity(10);
-
-    #[allow(clippy::uninit_vec)]
-    unsafe {
-        buffer.set_len(10);
-    }
+    let mut buffer = vec![0u8; 10];
 
     buffer[1] = match sex {
         Some(Sex::Male) => {
