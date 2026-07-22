@@ -1,4 +1,4 @@
-#![cfg(feature = "rand")]
+#![cfg(feature = "generate")]
 
 use tw_id_num::{
     check, check_national, check_resident, generate, generate_national, generate_resident,

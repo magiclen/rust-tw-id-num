@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::{Rng, RngExt};
 
 use crate::location_values;
 
@@ -16,7 +16,7 @@ pub enum Sex {
 
 fn generate_2_to_9_and_create_string<R: Rng>(mut buffer: Vec<u8>, mut rng: R) -> String {
     for e in buffer[2..=8].iter_mut() {
-        *e = rng.gen_range(b'0'..=b'9');
+        *e = rng.random_range(b'0'..=b'9');
     }
 
     let mut sum = location_values::LOCATION_VALUES[(buffer[0] - b'A') as usize] as u16;
@@ -32,7 +32,7 @@ fn generate_2_to_9_and_create_string<R: Rng>(mut buffer: Vec<u8>, mut rng: R) ->
 
 #[inline]
 fn generate_continue_national<R: Rng>(mut buffer: Vec<u8>, mut rng: R) -> String {
-    buffer[0] = rng.gen_range(b'A'..=b'Z');
+    buffer[0] = rng.random_range(b'A'..=b'Z');
 
     generate_2_to_9_and_create_string(buffer, rng)
 }
@@ -40,7 +40,7 @@ fn generate_continue_national<R: Rng>(mut buffer: Vec<u8>, mut rng: R) -> String
 #[inline]
 fn generate_continue_resident<R: Rng>(mut buffer: Vec<u8>, mut rng: R) -> String {
     buffer[0] = {
-        let mut rnd = rng.gen_range(b'A'..(b'A' + 22));
+        let mut rnd = rng.random_range(b'A'..(b'A' + 22));
 
         if rnd >= b'A' + 21 {
             rnd += 4;
@@ -63,7 +63,7 @@ pub fn generate_national_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> Strin
     buffer[1] = match sex {
         Some(Sex::Male) => b'1',
         Some(Sex::Female) => b'2',
-        None => rng.gen_range(b'1'..=b'2'),
+        None => rng.random_range(b'1'..=b'2'),
     };
 
     generate_continue_national(buffer, rng)
@@ -72,7 +72,7 @@ pub fn generate_national_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> Strin
 /// 產生國民身分證統一編號。
 #[inline]
 pub fn generate_national(sex: Option<Sex>) -> String {
-    generate_national_with_rng(sex, rand::thread_rng())
+    generate_national_with_rng(sex, rand::rng())
 }
 
 /// 產生新式外來人口統一證號。
@@ -82,7 +82,7 @@ pub fn generate_resident_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> Strin
     buffer[1] = match sex {
         Some(Sex::Male) => b'8',
         Some(Sex::Female) => b'9',
-        None => rng.gen_range(b'8'..=b'9'),
+        None => rng.random_range(b'8'..=b'9'),
     };
 
     generate_continue_resident(buffer, rng)
@@ -91,7 +91,7 @@ pub fn generate_resident_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> Strin
 /// 產生新式外來人口統一證號。
 #[inline]
 pub fn generate_resident(sex: Option<Sex>) -> String {
-    generate_resident_with_rng(sex, rand::thread_rng())
+    generate_resident_with_rng(sex, rand::rng())
 }
 
 /// 產生國民身分證統一編號或是新式外來人口統一證號。
@@ -100,25 +100,17 @@ pub fn generate_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
 
     buffer[1] = match sex {
         Some(Sex::Male) => {
-            let rnd = rng.gen_range(1u8..=2);
+            let rnd = rng.random_range(1u8..=2);
 
-            if rnd == 1 {
-                b'1'
-            } else {
-                b'8'
-            }
+            if rnd == 1 { b'1' } else { b'8' }
         },
         Some(Sex::Female) => {
-            let rnd = rng.gen_range(1u8..=2);
+            let rnd = rng.random_range(1u8..=2);
 
-            if rnd == 1 {
-                b'2'
-            } else {
-                b'9'
-            }
+            if rnd == 1 { b'2' } else { b'9' }
         },
         None => {
-            let rnd = rng.gen_range(1u8..=4);
+            let rnd = rng.random_range(1u8..=4);
 
             match rnd {
                 1 => b'1',
@@ -140,5 +132,5 @@ pub fn generate_with_rng<R: Rng>(sex: Option<Sex>, mut rng: R) -> String {
 /// 產生國民身分證統一編號或是新式外來人口統一證號。
 #[inline]
 pub fn generate(sex: Option<Sex>) -> String {
-    generate_with_rng(sex, rand::thread_rng())
+    generate_with_rng(sex, rand::rng())
 }

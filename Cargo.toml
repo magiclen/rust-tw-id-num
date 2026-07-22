@@ -1,8 +1,8 @@
 [package]
 name = "tw-id-num"
 version = "0.1.2"
-edition = "2021"
-rust-version = "1.56"
+edition = "2024"
+rust-version = "1.85"
 repository = "https://github.com/magiclen/rust-tw-id-num"
 homepage = "https://magiclen.org/tw-id-num"
 keywords = ["taiwan"]
@@ -12,10 +12,11 @@ license = "MIT"
 include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
 
 [dependencies]
-rand = { version = "0.8.5", optional = true }
+rand = { version = "0.10", optional = true }
 
 [features]
-generate = ["rand"]
+generate = ["dep:rand"]
 
 [package.metadata.docs.rs]
 all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

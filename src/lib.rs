@@ -31,14 +31,15 @@ features = ["generate"]
 ```
 */
 
-#![cfg_attr(not(feature = "rand"), no_std)]
+#![cfg_attr(not(feature = "generate"), no_std)]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod check;
 mod location_values;
 
-#[cfg(feature = "rand")]
+#[cfg(feature = "generate")]
 mod generate;
 
 pub use check::*;
-#[cfg(feature = "rand")]
+#[cfg(feature = "generate")]
 pub use generate::*;
